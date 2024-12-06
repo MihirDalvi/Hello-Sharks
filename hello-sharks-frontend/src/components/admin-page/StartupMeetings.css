@@ -1,0 +1,36 @@
+.entrepreneur-meetings {
+    background-color: #f9f9f9;
+    padding: 100px;
+    border-radius: 10px;
+  }
+  
+  .meeting-list {
+    margin-top: 20px;
+  }
+  
+  .meeting-card {
+    background-color: #ffffff;
+    border: 1px solid #ffffff;
+  }
+
+  .meeting-details {
+    display: flex;
+    gap: 15px; /* Spacing between elements */
+    flex-wrap: wrap; /* Ensures it wraps on smaller screens */
+  }
+  
+  .meeting-name {
+    font-size: 1.5rem;
+    color: #333;
+  }
+  
+  .meeting-date,
+  .meeting-time {
+    font-size: 1.1rem;
+    color: #555;
+  }
+  
+  button {
+    font-size: 1rem;
+  }
+  

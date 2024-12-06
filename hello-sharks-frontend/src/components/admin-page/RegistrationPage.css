@@ -1,0 +1,136 @@
+
+.registration-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    /* background: linear-gradient(135deg, #007bff, #6c757d); */
+    padding: 20px; /* Add padding for smaller screens */
+    background: white;
+  }
+  
+  .form-container {
+    background: white;
+    width: 100%;
+    max-width: 500px;
+    border-radius: 8px;
+    padding: 30px;
+  }
+  
+  .form-container h2 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #007bff;
+    text-align: center; /* Center the heading */
+  }
+  
+  .form-container .form-group label {
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .form-container .form-control {
+    border-radius: 5px;
+    font-size: 14px;
+  }
+  
+  .btn-primary {
+    background-color: #007bff;
+    border: none;
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .btn-primary:hover {
+    background-color: #0056b3;
+  }
+  
+  .text-primary {
+    color: #007bff !important;
+  }
+  
+  .text-primary:hover {
+    text-decoration: underline;
+  }
+  
+  /* Media Query for Smaller Screens */
+  @media (max-width: 576px) {
+    .form-container {
+      padding: 20px; /* Reduce padding */
+    }
+  
+    .form-container h2 {
+      font-size: 20px; /* Adjust heading size */
+    }
+  
+    .form-control {
+      font-size: 12px; /* Adjust input font size */
+    }
+  
+    .btn-primary {
+      font-size: 14px; /* Adjust button font size */
+    }
+  }
+  
+  /* Media Query for Tablets */
+  @media (min-width: 577px) and (max-width: 768px) {
+    .form-container {
+      padding: 25px; /* Slightly reduce padding */
+    }
+  
+    .form-container h2 {
+      font-size: 22px; /* Adjust heading size */
+    }
+  }
+  
+/* .registration-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #007bff, #6c757d);
+  }
+  
+  .form-container {
+    background: white;
+    width: 100%;
+    max-width: 500px;
+    border-radius: 8px;
+    padding: 30px;
+  }
+  
+  .form-container h2 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #007bff;
+  }
+  
+  .form-container .form-group label {
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .form-container .form-control {
+    border-radius: 5px;
+    font-size: 14px;
+  }
+  
+  .btn-primary {
+    background-color: #007bff;
+    border: none;
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .btn-primary:hover {
+    background-color: #0056b3;
+  }
+  
+  .text-primary {
+    color: #007bff !important;
+  }
+  
+  .text-primary:hover {
+    text-decoration: underline;
+    color: #0056b3;
+  } */
