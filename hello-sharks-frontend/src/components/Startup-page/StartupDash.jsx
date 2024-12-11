@@ -1,5 +1,8 @@
 import React from "react";
 import "./App.css";
+import { Bar, Line } from "react-chartjs-2";
+import "../video/Vediocall.css";
+import { ZegoUIKitPrebuilt } from "@zegocloud/zego-uikit-prebuilt";
 import { useNavigate } from "react-router-dom";
 import {
   Button,
@@ -9,7 +12,20 @@ import {
   CardContent,
   CardMedia,
   Modal,
+  Toolbar,
+  CardActions,
 } from "@mui/material";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  LineElement,
+  PointElement,
+} from "chart.js";
 import PropTypes from "prop-types";
 import Stack from "@mui/material/Stack";
 import MenuList from "@mui/material/MenuList";
@@ -19,12 +35,15 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import Avatar from "@mui/material/Avatar";
 import Divider from "@mui/material/Divider";
 // import Paper from "@mui/material/Paper";
-import Grid from "@mui/material/Grid2";
+import Grid from "@mui/material/Grid";
 import { createTheme } from "@mui/material/styles";
 import DashboardIcon from "@mui/icons-material/Dashboard";
-import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
+import AccountBoxIcon from "@mui/icons-material/AccountBox";
+import BusinessIcon from "@mui/icons-material/Business";
+// import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
+import VideoCallIcon from "@mui/icons-material/VideoCall";
 // import BorderColorIcon from "@mui/icons-material/BorderColor";
-import InfoIcon from "@mui/icons-material/Info";
+// import InfoIcon from "@mui/icons-material/Info";
 import { AppProvider } from "@toolpad/core/AppProvider";
 import { DashboardLayout } from "@toolpad/core/DashboardLayout";
 import {
@@ -40,19 +59,24 @@ const NAVIGATION = [
     title: "Main items",
   },
   {
-    segment: "profile",
-    title: "Profile",
+    segment: "dashboard",
+    title: "Dashboard",
     icon: <DashboardIcon />,
   },
   {
-    segment: "startups",
-    title: "Startups",
-    icon: <InfoIcon />,
+    segment: "profile",
+    title: "Profile",
+    icon: <AccountBoxIcon />,
+  },
+  {
+    segment: "forstartups",
+    title: "For Startups",
+    icon: <BusinessIcon />,
   },
   {
     segment: "meeting",
     title: "Meeting",
-    icon: <CurrencyRupeeIcon />,
+    icon: <VideoCallIcon />,
   },
 ];
 
@@ -72,6 +96,35 @@ const demoTheme = createTheme({
   },
 });
 
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  LineElement,
+  PointElement,
+  Title,
+  Tooltip,
+  Legend
+);
+
+function randomID(len) {
+  let result = "";
+  if (result) return result;
+  var chars = "12345qwertyuiopasdfgh67890jklmnbvcxzMNBVCZXASDQWERTYHGFUIOLKJP",
+    maxPos = chars.length,
+    i;
+  len = len || 5;
+  for (i = 0; i < len; i++) {
+    result += chars.charAt(Math.floor(Math.random() * maxPos));
+  }
+  return result;
+}
+
+export function getUrlParams(url = window.location.href) {
+  let urlStr = url.split("?")[1];
+  return new URLSearchParams(urlStr);
+}
+
 function DemoPageContent({ pathname }) {
   return (
     <Box
@@ -83,14 +136,16 @@ function DemoPageContent({ pathname }) {
         textAlign: "center",
       }}
     >
-      {pathname === "/profile" && <DashboardContent />}
-      {pathname === "/startups" && <AboutUsPage />}
-      {pathname === "/forstartups" && <ForStartupsPage />}
+      {pathname === "/dashboard" && <DashboardContent />}
+      {pathname === "/profile" && <ForStartupsPage />}
+      {pathname === "/forstartups" && <AboutUsPage />}
       {pathname === "/forsharks" && <ForSharksPage />}
-      {pathname !== "/profile" &&
+      {pathname === "/meeting" && <MeetingPage />}
+      {pathname !== "/dashboard" &&
         pathname !== "/aboutus" &&
         pathname !== "/forstartups" &&
-        pathname != "/forsharks" && (
+        pathname !== "/forsharks" &&
+        pathname !== "/meeting" && (
           <Typography>Page content for {pathname}</Typography>
         )}
     </Box>
@@ -98,88 +153,230 @@ function DemoPageContent({ pathname }) {
 }
 
 function DashboardContent() {
+  // Example Chart Data
+  const barChartData = {
+    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+    datasets: [
+      {
+        label: "Sales",
+        data: [50, 70, 40, 90, 60, 80],
+        backgroundColor: "rgba(75, 192, 192, 0.6)",
+      },
+    ],
+  };
+
+  const lineChartData = {
+    labels: ["Week 1", "Week 2", "Week 3", "Week 4"],
+    datasets: [
+      {
+        label: "Profit",
+        data: [30, 40, 50, 70],
+        borderColor: "rgba(153, 102, 255, 1)",
+        borderWidth: 2,
+        fill: false,
+      },
+    ],
+  };
+
   return (
-    <Box
-      sx={{
-        background: "linear-gradient(to bottom, #004d40, #00796b)",
-        color: "white",
-        minHeight: "100vh",
-        minWidth: "150vh",
-        textAlign: "center",
-        padding: "50px 20px",
-      }}
-    >
-      {/* Header Section */}
-      <Box sx={{ mb: 5 }}>
-        <Typography variant="h3" sx={{ fontWeight: "bold" }} gutterBottom>
-          Hello New Startups
-        </Typography>
-        <Typography variant="h4" gutterBottom>
-          Welcome
-        </Typography>
-      </Box>
+    <Box sx={{ display: "flex" }}>
+      {/* Main Content */}
+      <Box
+        component="main"
+        sx={{
+          background: "linear-gradient(to bottom, #004d40, #00796b)",
+          color: "white",
+          minHeight: "100vh",
+          minWidth: "150vh",
+          textAlign: "center",
+          padding: "0px 50px",
+          flexGrow: 1,
+        }}
+      >
+        <Toolbar />
 
-      {/* Description Section */}
-      <Box>
+        {/* Header Section */}
         <Typography
-          variant="body1"
-          sx={{ fontSize: "1.2rem", maxWidth: "800px", margin: "0 auto" }}
+          variant="h3"
+          sx={{ fontWeight: "bold", textTransform: "uppercase", mb: 3 }}
         >
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto
-          voluptas eius sit error dolorem aspernatur, eum adipisci recusandae
-          vel vitae, ad hic repellat commodi molestiae necessitatibus voluptate
-          a nisi debitis!
+          Hello, <span style={{ color: "#00e676" }}>STARTUPS!</span>
         </Typography>
-      </Box>
 
-      {/* Buttons Section */}
-      {/* <Grid container justifyContent="center" spacing={2} sx={{ mb: 5 }}>
-        <Grid item>
-          <Button
-            variant="contained"
-            sx={{
-              backgroundColor: "#00acc1",
-              color: "white",
-              fontWeight: "bold",
-              padding: "10px 20px",
-              "&:hover": {
-                backgroundColor: "#00838f",
-              },
-            }}
-            //onClick={() => { pathname === "/forstartups" && <ForStartupsPage />;}}
-          >
-            For Startups
-          </Button>
-        </Grid>
-        <Grid item>
-          <Button
-            variant="contained"
-            sx={{
-              backgroundColor: "#00acc1",
-              color: "white",
-              fontWeight: "bold",
-              padding: "10px 20px",
-              "&:hover": {
-                backgroundColor: "#00838f",
-              },
-            }}
-          >
-            For Sharks
-          </Button>
-        </Grid>
-      </Grid> */}
+        <Typography variant="h5" gutterBottom>
+          Welcome to your dashboard. Here are some quick stats and insights.
+        </Typography>
 
-      {/* Illustration/Content Section */}
-      <Box>
-        <img
-          src="../src/assets/images/dashboard3.png"
-          alt="Illustration"
-          style={{ maxWidth: "40%", marginBottom: "20px" }}
-        />
+        {/* Cards and Charts Section */}
+        <Grid container spacing={3}>
+          {/* Cards */}
+          <Grid item xs={12} sm={6} md={3}>
+            <Card sx={{ backgroundColor: "#2c2c3b", color: "white" }}>
+              <CardContent>
+                <Typography variant="h6">Total Sales</Typography>
+                <Typography variant="h4">$42.8k</Typography>
+              </CardContent>
+              <CardActions>
+                <Button size="small" sx={{ color: "#6c63ff" }}>
+                  View Details
+                </Button>
+              </CardActions>
+            </Card>
+          </Grid>
+
+          <Grid item xs={12} sm={6} md={3}>
+            <Card sx={{ backgroundColor: "#2c2c3b", color: "white" }}>
+              <CardContent>
+                <Typography variant="h6">New Projects</Typography>
+                <Typography variant="h4">862</Typography>
+              </CardContent>
+              <CardActions>
+                <Button size="small" sx={{ color: "#6c63ff" }}>
+                  View Projects
+                </Button>
+              </CardActions>
+            </Card>
+          </Grid>
+
+          <Grid item xs={12} sm={6} md={3}>
+            <Card sx={{ backgroundColor: "#2c2c3b", color: "white" }}>
+              <CardContent>
+                <Typography variant="h6">Revenue</Typography>
+                <Typography variant="h4">$86.4k</Typography>
+              </CardContent>
+              <CardActions>
+                <Button size="small" sx={{ color: "#6c63ff" }}>
+                  View Revenue
+                </Button>
+              </CardActions>
+            </Card>
+          </Grid>
+
+          <Grid item xs={12} sm={6} md={3}>
+            <Card sx={{ backgroundColor: "#2c2c3b", color: "white" }}>
+              <CardContent>
+                <Typography variant="h6">Profit</Typography>
+                <Typography variant="h4">$25.6k</Typography>
+              </CardContent>
+              <CardActions>
+                <Button size="small" sx={{ color: "#6c63ff" }}>
+                  View Profit
+                </Button>
+              </CardActions>
+            </Card>
+          </Grid>
+
+          {/* Charts */}
+          <Grid item xs={12} md={6}>
+            <Card sx={{ backgroundColor: "#2c2c3b", color: "white" }}>
+              <CardContent>
+                <Typography variant="h6" gutterBottom>
+                  Sales Performance
+                </Typography>
+                <Bar data={barChartData} />
+              </CardContent>
+            </Card>
+          </Grid>
+
+          <Grid item xs={12} md={6}>
+            <Card sx={{ backgroundColor: "#2c2c3b", color: "white" }}>
+              <CardContent>
+                <Typography variant="h6" gutterBottom>
+                  Profit Overview
+                </Typography>
+                <Line data={lineChartData} />
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
       </Box>
     </Box>
   );
 }
+
+// function DashboardContent() {
+//   return (
+//     <Box
+//       sx={{
+//         background: "linear-gradient(to bottom, #004d40, #00796b)",
+//         color: "white",
+//         minHeight: "100vh",
+//         minWidth: "150vh",
+//         textAlign: "center",
+//         padding: "50px 20px",
+//       }}
+//     >
+//       {/* Header Section */}
+//       <Box sx={{ mb: 5 }}>
+//         <Typography variant="h3" sx={{ fontWeight: "bold" }} gutterBottom>
+//           Hello New Startups
+//         </Typography>
+//         <Typography variant="h4" gutterBottom>
+//           Welcome
+//         </Typography>
+//       </Box>
+
+//       {/* Description Section */}
+//       <Box>
+//         <Typography
+//           variant="body1"
+//           sx={{ fontSize: "1.2rem", maxWidth: "800px", margin: "0 auto" }}
+//         >
+//           Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto
+//           voluptas eius sit error dolorem aspernatur, eum adipisci recusandae
+//           vel vitae, ad hic repellat commodi molestiae necessitatibus voluptate
+//           a nisi debitis!
+//         </Typography>
+//       </Box>
+
+//       {/* Buttons Section */}
+//       {/* <Grid container justifyContent="center" spacing={2} sx={{ mb: 5 }}>
+//         <Grid item>
+//           <Button
+//             variant="contained"
+//             sx={{
+//               backgroundColor: "#00acc1",
+//               color: "white",
+//               fontWeight: "bold",
+//               padding: "10px 20px",
+//               "&:hover": {
+//                 backgroundColor: "#00838f",
+//               },
+//             }}
+//             //onClick={() => { pathname === "/forstartups" && <ForStartupsPage />;}}
+//           >
+//             For Startups
+//           </Button>
+//         </Grid>
+//         <Grid item>
+//           <Button
+//             variant="contained"
+//             sx={{
+//               backgroundColor: "#00acc1",
+//               color: "white",
+//               fontWeight: "bold",
+//               padding: "10px 20px",
+//               "&:hover": {
+//                 backgroundColor: "#00838f",
+//               },
+//             }}
+//           >
+//             For Sharks
+//           </Button>
+//         </Grid>
+//       </Grid> */}
+
+//       {/* Illustration/Content Section */}
+//       <Box>
+//         <img
+//           src="../src/assets/images/dashboard3.png"
+//           alt="Illustration"
+//           style={{ maxWidth: "40%", marginBottom: "20px" }}
+//         />
+//       </Box>
+//     </Box>
+//   );
+// }
 
 function AboutUsPage() {
   //   const navigate = useNavigate();
@@ -616,6 +813,52 @@ function ForSharksPage() {
   );
 }
 
+function MeetingPage() {
+  const roomID = getUrlParams().get("roomID") || randomID(5);
+  let myMeeting = async (element) => {
+    // generate Kit Token
+    const appID = 1681749580;
+    const serverSecret = "6f5fc90a8ccb8a1faf68536ff55224ce";
+    const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(
+      appID,
+      serverSecret,
+      roomID,
+      randomID(5),
+      randomID(5)
+    );
+
+    // Create instance object from Kit Token.
+    const zp = ZegoUIKitPrebuilt.create(kitToken);
+    // start the call
+    zp.joinRoom({
+      container: element,
+      sharedLinks: [
+        {
+          name: "Copy link",
+          url:
+            window.location.protocol +
+            "//" +
+            window.location.host +
+            window.location.pathname +
+            "?roomID=" +
+            roomID,
+        },
+      ],
+      scenario: {
+        mode: ZegoUIKitPrebuilt.GroupCall, // To implement 1-on-1 calls, modify the parameter here to [ZegoUIKitPrebuilt.OneONoneCall].
+      },
+    });
+  };
+
+  return (
+    <div
+      className="myCallContainer"
+      ref={myMeeting}
+      style={{ width: "100vw", height: "100vh" }}
+    ></div>
+  );
+}
+
 DemoPageContent.propTypes = {
   pathname: PropTypes.string.isRequired,
 };
@@ -795,7 +1038,7 @@ const demoSession = {
 function DashboardLayoutAccountSidebar(props) {
   const { window } = props;
 
-  const [pathname, setPathname] = React.useState("/profile");
+  const [pathname, setPathname] = React.useState("/dashboard");
 
   const router = React.useMemo(() => {
     return {
@@ -839,7 +1082,7 @@ function DashboardLayoutAccountSidebar(props) {
       <DashboardLayout
         slots={{
           toolbarAccount: () => null,
-          sidebarFooter: SidebarFooterAccount,
+          //sidebarFooter: SidebarFooterAccount,
         }}
       >
         <DemoPageContent pathname={pathname} />

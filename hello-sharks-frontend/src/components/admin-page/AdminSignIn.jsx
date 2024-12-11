@@ -14,10 +14,10 @@ import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import MuiCard from "@mui/material/Card";
 import { styled } from "@mui/material/styles";
-import ForgotPassword from "./ForgotPassword";
+// import ForgotPassword from "./ForgotPassword";
 // import { SitemarkIcon } from "./CustomIcons";
-import AppTheme from "./shared-theme/AppTheme";
-import ColorModeSelect from "./shared-theme/ColorModeSelect";
+import AppTheme from "../../shared-theme/AppTheme.jsx";
+import ColorModeSelect from "../../shared-theme/ColorModeSelect.jsx";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -66,18 +66,18 @@ export default function SignIn(props) {
   const [emailErrorMessage, setEmailErrorMessage] = React.useState("");
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState("");
-  const [open, setOpen] = React.useState(false);
+  //   const [open, setOpen] = React.useState(false);
   const navigate = useNavigate();
 
   const [loginError, setLoginError] = React.useState("");
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  //   const handleClickOpen = () => {
+  //     setOpen(true);
+  //   };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  //   const handleClose = () => {
+  //     setOpen(false);
+  //   };
 
   // Hardcoded credentials
   const hardcodedUser = {
@@ -97,7 +97,7 @@ export default function SignIn(props) {
     if (email === hardcodedUser.email && password === hardcodedUser.password) {
       setLoginError("");
       // alert("Login successful!");
-      navigate("/StartupDash"); // Redirect to the home page
+      navigate("/AdminDash"); // Redirect to the home page
     } else {
       setLoginError("Invalid email or password. Please try again.");
     }
@@ -155,9 +155,13 @@ export default function SignIn(props) {
           <Typography
             component="h1"
             variant="h4"
-            sx={{ width: "100%", fontSize: "clamp(2rem, 10vw, 2.15rem)" }}
+            sx={{
+              width: "100%",
+              textAlign: "center",
+              fontSize: "clamp(2rem, 10vw, 2.15rem)",
+            }}
           >
-            Sign in for Startup
+            ADMIN SIGNIN
           </Typography>
           <Box
             component="form"
@@ -208,7 +212,7 @@ export default function SignIn(props) {
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             />
-            <ForgotPassword open={open} handleClose={handleClose} />
+            {/* <ForgotPassword open={open} handleClose={handleClose} /> */}
             <Button
               type="submit"
               fullWidth
@@ -229,7 +233,7 @@ export default function SignIn(props) {
               </Typography>
             )}
 
-            <Link
+            {/* <Link
               component="button"
               type="button"
               onClick={handleClickOpen}
@@ -237,7 +241,7 @@ export default function SignIn(props) {
               sx={{ alignSelf: "center" }}
             >
               Forgot your password?
-            </Link>
+            </Link> */}
           </Box>
           <Divider>or</Divider>
           <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
